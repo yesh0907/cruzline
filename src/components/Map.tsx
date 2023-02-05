@@ -1,26 +1,46 @@
 
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
-import { BusStop } from './BusStop';
+import { useEffect, useState } from 'react';
+import { type Route } from '@prisma/client';
+import { UserMarker } from './UserMarker';
 
-export function Map() {
+type MapProps = {
+    routes: Route[] | undefined
+}
+
+export function Map({ routes }: MapProps) {
+    routes;
+    const center = { lat: 36.979, lng: -122.047 };
+    const zoom = 13.4;
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
+    const [renderUserMarker, setRenderUserMarker] = useState(false);
+    const [pos, setPos] = useState({
+        lat: center.lat,
+        lng: center.lng,
+    });
 
     const { isLoaded, loadError } = useJsApiLoader({
         googleMapsApiKey: apiKey
     })
 
-    const renderMap = () => {
-        const center = { lat: 36.979, lng: -122.047 };
-        const zoom = 13.4;
-        const busStops: Array<google.maps.LatLng> = [new google.maps.LatLng(36.9776195, -122.0536106), new google.maps.LatLng(36.9773813, -122.0542297)];
-        const busStopPins = busStops.map((stop, index) => {
-            return (<BusStop
-                key={index}
-                lat={stop.lat()}
-                lng={stop.lng()}
-            />)
-        });
+    const successCallback = (position: any) => {
+        if (!renderUserMarker) {
+            setRenderUserMarker(true);
+        }
+        const { latitude, longitude } = position.coords;
+        if (pos.lat !== latitude || pos.lng !== longitude) {
+            setPos({
+                lat: latitude,
+                lng: longitude,
+            });
+        }
+    }
 
+    useEffect(() => {
+        navigator.geolocation.watchPosition(successCallback)
+    });
+
+    const renderMap = () => {
         return (
             <GoogleMap
                 center={center}
@@ -30,13 +50,16 @@ export function Map() {
                     disableDefaultUI: true,
                     gestureHandling: "greedy"
                 }}>
-                {busStopPins}
+                {renderUserMarker && <UserMarker
+                    lat={pos.lat}
+                    lng={pos.lng}
+                />}
             </GoogleMap>
         )
     }
 
     if (loadError) {
-        return <div>Map couldn't load</div>
+        return <div>Did not load map</div>
     }
 
     return isLoaded ? renderMap() : <h1>Loading!</h1>
