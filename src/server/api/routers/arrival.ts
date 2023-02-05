@@ -7,9 +7,10 @@ const getArrivals = async(stopId: number):Promise<Arrival[]> => {
     const response = await axios.get(`https://cruzmetro.com/Stop/${stopId}/Arrivals`);
     const arrivals:Arrival[] = [];
     for (let i = 0; i < response.data.length; i++) {
-        for (const a of response.data[i].Arrivals) {
+        for (let j = 0; j < response.data[i].Arrivals.length; j++) {
+            const a = response.data[i].Arrivals[j];
             arrivals.push({
-                busID: a.BusID,
+                busID: a.RouteID,
                 stopID: a.StopID,
                 vehicleID: a.VehicleID,
                 arrivalTime: a.ArriveTime,
@@ -17,7 +18,7 @@ const getArrivals = async(stopId: number):Promise<Arrival[]> => {
                 secondsToArrival: a.SecondsToArrival,
                 timeToArrival: a.Time,
                 vehicleName: a.VehicleName
-            } as Arrival)
+            });
         }
     }
     return arrivals;

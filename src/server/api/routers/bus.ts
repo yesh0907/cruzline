@@ -10,6 +10,9 @@ export const busRouter = createTRPCRouter({
     return await ctx.prisma.bus.findMany({
       where: {
         routeId: input.routeId,
+      },
+      include: {
+        stops: true,
       }
     });
   }),
@@ -21,6 +24,9 @@ export const busRouter = createTRPCRouter({
     const bus = await ctx.prisma.bus.findUnique({
         where: {
             id: input.busId,
+        },
+        include: {
+            stops: true,
         }
     });
     return bus;
