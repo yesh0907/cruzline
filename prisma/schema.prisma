@@ -33,8 +33,7 @@ model Stop {
     name String
     lat Float
     lng Float
-    busId Int
-    bus Bus @relation(fields: [busId], references: [id])
+    buses Bus[]
 }
 
 model Waypoint {

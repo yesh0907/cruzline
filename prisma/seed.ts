@@ -60,13 +60,19 @@ async function main() {
             name: stop.Name,
             lat: stop.Latitude,
             lng: stop.Longitude,
-            bus: {
+            buses: {
               connect: {
                 id: bus.id,
-              },
-            },
+              }
+            }
           },
-          update: {},
+          update: {
+            buses: {
+              connect: {
+                id: bus.id,
+              }
+            }
+          },
         });
         await prisma.waypoint.upsert({
           where: {
