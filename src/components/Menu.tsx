@@ -22,10 +22,11 @@ const Tab = ({ title, active, onClick }: { title: string, active: boolean, onCli
 }
 
 type MenuProps = {
-    routes: Route[] | undefined
+    routes: Route[] | undefined,
+    stops: Stop[] | undefined
 }
 
-export const Menu = ({ routes }: MenuProps) => {
+export const Menu = ({ routes, stops }: MenuProps) => {
     const [activeTab, setActiveTab] = useState(0)
     const [showStops, setShowStops] = useState<{ show: boolean, route: Route | undefined }>({ show: false, route: undefined })
 
@@ -45,7 +46,7 @@ export const Menu = ({ routes }: MenuProps) => {
                 </div>
                 <div className="container overflow-scroll">
                     {activeTab === 0 && <Routes routes={routes} viewTransition={setShowStops} />}
-                    {activeTab === 1 && <Search />}
+                    {activeTab === 1 && <Search routes={routes} stops={stops} />}
                 </div>
             </>
         )
