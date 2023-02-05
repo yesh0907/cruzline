@@ -11,6 +11,6 @@ export interface Arrival {
 
 export interface Location {
   vehicleID: number,
-  lat: string,
-  lng: string
+  lat: number,
+  lng: number
 }
