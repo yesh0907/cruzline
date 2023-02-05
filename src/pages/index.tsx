@@ -22,7 +22,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.co" />
       </Head>
       <main className="flex min-h-screen flex-col">
-        <Map />
+        <Map routes={routes} />
         <Menu routes={routes} />
       </main>
     </>
