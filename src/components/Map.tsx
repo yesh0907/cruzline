@@ -1,7 +1,7 @@
 
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import { useEffect, useState } from 'react';
-import { Route } from '@prisma/client';
+import { type Route } from '@prisma/client';
 import { UserMarker } from './UserMarker';
 
 type MapProps = {
@@ -9,6 +9,7 @@ type MapProps = {
 }
 
 export function Map({ routes }: MapProps) {
+    routes;
     const center = { lat: 36.979, lng: -122.047 };
     const zoom = 13.4;
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
@@ -23,7 +24,6 @@ export function Map({ routes }: MapProps) {
     })
 
     const successCallback = (position: any) => {
-        console.log(position)
         if (!renderUserMarker) {
             setRenderUserMarker(true);
         }
@@ -59,7 +59,7 @@ export function Map({ routes }: MapProps) {
     }
 
     if (loadError) {
-        return <div>Map couldn't load</div>
+        return <div>Did not load map</div>
     }
 
     return isLoaded ? renderMap() : <h1>Loading!</h1>
