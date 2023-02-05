@@ -1,10 +1,10 @@
-import { Marker } from "@react-google-maps/api";
+import { MarkerF } from "@react-google-maps/api";
 
 export function BusStop(props: { lat: number, lng: number }) {
     return (
-        <Marker
+        <MarkerF
             position={{ lat: props.lat, lng: props.lng }}
-            icon="/bluePin.png"
+            icon="/redMarker.svg"
         />
     )
 }
