@@ -10,8 +10,37 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model Route {
+    id Int @id
+    name String
+    displayName String
+    shortName String
+    buses Bus[]
+}
+
+model Bus {
+    id Int @id
+    routeId Int
+    route Route @relation(fields: [routeId], references: [id])
+    name String
+    directionality String
+    stops Stop[]
+    waypoints Waypoint[]
+}
+
+model Stop {
+    id Int @id
+    name String
+    lat Float
+    lng Float
+    busId Int
+    bus Bus @relation(fields: [busId], references: [id])
+}
+
+model Waypoint {
+    id Int @id
+    busId Int
+    bus Bus @relation(fields: [busId], references: [id])
+    lat Float
+    lng Float
 }
